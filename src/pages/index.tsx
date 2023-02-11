@@ -28,7 +28,7 @@ export default function Home(props: Props) {
               <h3>{config.infos.shortDesc}</h3>
 
               <div className={styles.btns}>
-                  <Button label="Accéder au dashboard" type="secondary" redirect="/login"/>
+                  <Button label="Accéder au dashboard" type="secondary" redirect="/api/login"/>
                   <Button label="Inviter le bot" type="primary" redirect={`https://discord.com/api/oauth2/authorize?client_id=${config.infos.id}&permissions=-1&scope=bot`}/>
               </div>
           </div>
@@ -53,7 +53,7 @@ export default function Home(props: Props) {
                   Prêt à vous lancer ?
               </h1>
               <div className={styles.btns}>
-                  <Button label="Accéder au dashboard" type="secondary" redirect="/login" />
+                  <Button label="Accéder au dashboard" type="secondary" redirect="/api/login" />
                   <Button label="Inviter le bot" type="primary" redirect={`https://discord.com/api/oauth2/authorize?client_id=${config.infos.id}&permissions=-1&scope=bot`} />
               </div>
           </div>
