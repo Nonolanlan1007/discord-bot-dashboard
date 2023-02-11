@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import config from "@/assets/config.json";
+import config from "../../../src/utils/config.json";
 import {checkIfUserIsLoggedIn, updateAccessToken, updateUserData} from "@/assets/scripts/loginFunctions";
 
 export default {

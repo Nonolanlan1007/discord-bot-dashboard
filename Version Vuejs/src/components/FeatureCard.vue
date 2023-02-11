@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import config from "@/assets/config.json";
+import config from "../../../src/utils/config.json";
 
 export default {
   name: "FeatureCard",

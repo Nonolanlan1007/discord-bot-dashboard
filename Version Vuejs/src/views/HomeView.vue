@@ -64,7 +64,7 @@
 
 <script>
 import NavBar from "@/components/NavBar.vue";
-import config from "@/assets/config.json";
+import config from "../../../src/utils/config.json";
 import FeatureCard from "@/components/FeatureCard.vue";
 
 export default {

@@ -1,0 +1,49 @@
+.botpresentation {
+    margin-top: 150px;
+    text-align: center;
+}
+
+.botpresentation img {
+    width: 200px;
+    height: 200px;
+    border-radius: 100%;
+}
+
+.botpresentation h1 {
+    margin-top: 20px;
+}
+
+.botpresentation h3 {
+    margin-top: 20px;
+}
+
+.features {
+    margin: 250px;
+    margin-top: 350px;
+    text-align: center;
+}
+
+.features .cards {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.cards button {
+    margin: 10px;
+}
+
+.cards button.primary:hover {
+    background: #2F3136;
+}
+
+.beforefooter {
+    margin-top: 150px;
+    text-align: center;
+}
+
+.link {
+    margin: 10px;
+    color: white;
+    text-decoration: none;
+}
