@@ -90,7 +90,7 @@ function Button (props: ButtonProps) {
             }
             {
                 props.type === "tertiary" ? <span style={{ cursor: "pointer" }}>{ props.redirect ? <Link style={linkStyle} href={props.redirect} target={props.redirect.startsWith("http") ? "_blank" : "_parent"}><button onClick={props.onClick} style={tertiaryStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>{props.label}</button></Link> : <button onClick={props.onClick} style={tertiaryStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>{props.label}</button> }</span> : null
-            },
+            }
             {
                 props.type === "iconic" && props.icon ? <span style={{ cursor: "pointer" }}>{ props.redirect ? <Link style={linkStyle} href={props.redirect} target={props.redirect.startsWith("http") ? "_blank" : "_parent"}><button onClick={props.onClick} style={secondaryStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>{props.label}</button></Link> : <button onClick={props.onClick} style={secondaryStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}><img style={iconStyle} src={props.icon} alt={props.label}/>{props.label}</button> }</span> : null
             }
