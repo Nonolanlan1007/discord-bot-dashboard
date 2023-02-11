@@ -1,0 +1,28 @@
+{
+  "infos": {
+    "name": "CoolBot",
+    "avatar": "https://cdn.discordapp.com/avatars/782667133716791316/645a75d5aebbd0ff2e57f3bd745ffdc9.png",
+    "shortDesc": "A cool bot",
+    "features": [
+      {
+        "title": "Modération",
+        "icon": "https://cdn.discordapp.com/attachments/967139585350062120/1073617629866110997/907718915508019251.png",
+        "desc": "CoolBot est un bot de modération complet et puissant."
+      },
+      {
+        "title": "Modération",
+        "icon": "https://cdn.discordapp.com/attachments/967139585350062120/1073617629866110997/907718915508019251.png",
+        "desc": "CoolBot est un bot de modération complet et puissant."
+      },
+      {
+        "title": "Modération",
+        "icon": "https://cdn.discordapp.com/attachments/967139585350062120/1073617629866110997/907718915508019251.png",
+        "desc": "CoolBot est un bot de modération complet et puissant."
+        }
+    ],
+    "id": "807895532495831041",
+    "support": "https://discord.gg/coolbot",
+    "docs": "https://docs.coolbot.com",
+    "mainColor": "#F2AC34"
+  }
+}
