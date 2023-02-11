@@ -1,12 +1,14 @@
 import config from "@/utils/config.json";
 import {useState} from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface ButtonProps {
     label: string
     onClick?: () => void
-    type: 'primary' | 'secondary' | 'tertiary'
+    type: 'primary' | 'secondary' | 'tertiary' | "iconic"
     redirect?: string
+    icon?: string
 }
 
 function Button (props: ButtonProps) {
@@ -39,6 +41,7 @@ function Button (props: ButtonProps) {
         "text-decoration": "none",
         "cursor": props.onClick ? "pointer" : "default",
         "background": hover ? "#2F3136" : `${config.infos.mainColor}`,
+        "display": "flex",
     }
 
     let tertiaryStyle = {
@@ -63,6 +66,13 @@ function Button (props: ButtonProps) {
         "cursor": "pointer"
     }
 
+    let iconStyle = {
+        "border-radius": hover ? "100%" : "1em",
+        "border": "none",
+        "width": "50px",
+        "height": "50px"
+    }
+
     const handleMouseEnter = () => {
         setHover(true);
     };
@@ -80,6 +90,9 @@ function Button (props: ButtonProps) {
             }
             {
                 props.type === "tertiary" ? <span style={{ cursor: "pointer" }}>{ props.redirect ? <Link style={linkStyle} href={props.redirect} target={props.redirect.startsWith("http") ? "_blank" : "_parent"}><button onClick={props.onClick} style={tertiaryStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>{props.label}</button></Link> : <button onClick={props.onClick} style={tertiaryStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>{props.label}</button> }</span> : null
+            },
+            {
+                props.type === "iconic" && props.icon ? <span style={{ cursor: "pointer" }}>{ props.redirect ? <Link style={linkStyle} href={props.redirect} target={props.redirect.startsWith("http") ? "_blank" : "_parent"}><button onClick={props.onClick} style={secondaryStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>{props.label}</button></Link> : <button onClick={props.onClick} style={secondaryStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}><img style={iconStyle} src={props.icon} alt={props.label}/>{props.label}</button> }</span> : null
             }
         </>
     )

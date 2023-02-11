@@ -15,10 +15,20 @@
     margin: 10px;
 }
 
-.navbar .right * {
+.navbar .right {
     margin: 5px;
     right: 0;
     position: absolute;
+}
+
+.navbar .right * {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar .right img {
+    margin-right: 5px
 }
 
 .logo {

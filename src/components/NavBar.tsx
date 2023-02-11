@@ -1,8 +1,13 @@
 import config from "@/utils/config.json"
 import styles from "@/styles/components/NavBar.module.css"
-import { Button } from "@/components/globals";
+import { Button } from "@/components/Inputs";
+import {DiscordUser} from "@/utils/types";
 
-export default function NavBar() {
+interface NavBarProps {
+    user?: DiscordUser | null
+}
+
+export default function NavBar(props: NavBarProps) {
     return (
         <div className={styles.navbar}>
             <div className={styles.left}>
@@ -16,7 +21,9 @@ export default function NavBar() {
                 }
             </div>
             <div className={styles.right}>
-                <Button label="Se connecter" type="tertiary" redirect="/login" />
+                {
+                    props.user ? <Button label={props.user.username} type="iconic" icon={`https://cdn.discordapp.com/avatars/${props.user.id}/${props.user.avatar}.png`} /> : <Button label="Se connecter" type="tertiary" redirect="/api/login" />
+                }
             </div>
         </div>
     )
