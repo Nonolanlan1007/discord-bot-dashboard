@@ -77,3 +77,16 @@ p {
 .links .link {
   margin: 10px;
 }
+
+.link:hover {
+  text-decoration: underline;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #202225;
+  border-radius: 10px;
+}

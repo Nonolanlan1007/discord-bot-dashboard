@@ -2,9 +2,10 @@ import {NextApiRequest, NextApiResponse} from "next";
 import axios from "axios";
 import config from "@/utils/config.json";
 // @ts-ignore
-import {sign} from "jsonwebtoken";
+import {sign, verify} from "jsonwebtoken";
 // @ts-ignore
 import {serialize} from "cookie";
+import {Guild,DiscordUser} from "@/utils/types";
 
 
 const scope = ["identify", "guilds"].join(" ");
@@ -49,16 +50,22 @@ export default async function Login(req: NextApiRequest, res: NextApiResponse) {
         headers: { Authorization: `${token_type} ${access_token}` }
     }).then(res => res.data);
 
+    const guilds: Guild[] | { unauthorized: true } = await axios.get("https://discord.com/api/users/@me/guilds", {
+        headers: { Authorization: `${token_type} ${access_token}` }
+    }).then(res => res.data);
+
     if (!("id" in me)) return res.redirect(OAuthURL);
 
-    const token = sign(me, process.env.JWT_SECRET!, { expiresIn: "1w" });
+    const token = sign({ user: me, guilds: guilds }, process.env.JWT_SECRET!, { expiresIn: "1w" });
 
-    res.setHeader("Set-Cookie", serialize(process.env.COOKIENAME!, token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV !== "development",
-        sameSite: "lax",
-        path: "/"
-    }));
+    res.setHeader("Set-Cookie", [
+        serialize("cookie", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== "development",
+            sameSite: "lax",
+            path: "/"
+        })
+    ]);
 
-    res.redirect("/");
+    res.redirect("/dash");
 }

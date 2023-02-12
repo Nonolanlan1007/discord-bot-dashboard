@@ -1,27 +1,23 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import config from "@/utils/config.json";
+import Link from "next/link";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
       <>
         <Component {...pageProps} />
-        <script type="text/javascript">
-          document.getElementsByName("button").style.background = "#7289da";
-        </script>
         <footer>
           <div className="content">
             <img src={config.infos.avatar} alt={config.infos.name} className="logo"/>
             <div className="links">
               {
-                config.infos.support ? <a className="link" href={config.infos.support}>Serveur support</a> : null
+                config.infos.support ? <Link className="link" href={config.infos.support}>Serveur support</Link> : null
               }
               {
-                config.infos.docs ? <a className="link" href={config.infos.docs}>Documentation</a> : null
+                config.infos.docs ? <Link className="link" href={config.infos.docs}>Documentation</Link> : null
               }
-              <button className="link">
-                Accéder au dashboard
-              </button>
+              <Link className={"link"} href={"/dash"}>Accéder au dashboard</Link>
             </div>
           </div>
 

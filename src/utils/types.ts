@@ -14,4 +14,14 @@ export interface DiscordUser {
 
 export interface Props {
     user: DiscordUser | null;
+    servers: number;
+}
+
+export interface Guild {
+    id: string;
+    name: string;
+    icon: string;
+    owner: boolean;
+    permissions: string;
+    features: string[];
 }

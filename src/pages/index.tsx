@@ -8,7 +8,8 @@ import { Button } from "@/components/Inputs";
 import FeatureCard from "@/components/FeatureCard";
 import {parseUser} from "@/utils/parseUser";
 import {GetServerSideProps} from "next";
-import {Props} from "@/utils/types";
+import {DiscordUser, Props} from "@/utils/types";
+import axios from "axios";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -28,7 +29,7 @@ export default function Home(props: Props) {
               <h3>{config.infos.shortDesc}</h3>
 
               <div className={styles.btns}>
-                  <Button label="Accéder au dashboard" type="secondary" redirect="/api/login"/>
+                  <Button label="Accéder au dashboard" type="secondary" redirect="/dash"/>
                   <Button label="Inviter le bot" type="primary" redirect={`https://discord.com/api/oauth2/authorize?client_id=${config.infos.id}&permissions=-1&scope=bot`}/>
               </div>
           </div>
@@ -50,10 +51,10 @@ export default function Home(props: Props) {
 
           <div className={styles.beforefooter}>
               <h1>
-                  Prêt à vous lancer ?
+                  {props.servers} serveurs nous font déjà confiance ! <br/>Alors pourquoi pas vous ?
               </h1>
               <div className={styles.btns}>
-                  <Button label="Accéder au dashboard" type="secondary" redirect="/api/login" />
+                  <Button label="Accéder au dashboard" type="secondary" redirect="/dash" />
                   <Button label="Inviter le bot" type="primary" redirect={`https://discord.com/api/oauth2/authorize?client_id=${config.infos.id}&permissions=-1&scope=bot`} />
               </div>
           </div>
@@ -62,8 +63,10 @@ export default function Home(props: Props) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
+export const getServerSideProps: (ctx: any) => Promise<{ props: { servers: string; user: DiscordUser | null } }> = async (ctx) => {
     const user = parseUser(ctx);
 
-    return { props: { user: user } };
+    const stats = await axios.get(`${process.env.APP_URL}/api/stats`).then(res => res.data);
+
+    return { props: { user: user, servers: stats.servers! } };
 }
