@@ -1,0 +1,92 @@
+.primary {
+    background: #2F3136;
+    border-radius: 1em;
+    border: none;
+    padding: 25px;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+    font-family: 'Nunito', sans-serif;
+    outline: none;
+    text-decoration: none;
+    cursor: pointer
+}
+
+.primary:hover {
+    background: #36393F;
+    color: var(--mainColor);
+}
+
+.secondary {
+    border-radius: 1em;
+    border: none;
+    padding: 25px;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+    font-family: 'Nunito', sans-serif;
+    outline: none;
+    text-decoration: none;
+    cursor: pointer;
+    background: var(--mainColor);
+}
+
+.secondary:hover {
+    background: #2F3136;
+    color: var(--mainColor);
+}
+
+.tertiary {
+    border-radius: 1em;
+    border: 10px solid var(--mainColor);
+    padding: 10px;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+    font-family: 'Nunito', sans-serif;
+    outline: none;
+    background: none;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.tertiary:hover {
+    background: var(--mainColor);
+}
+
+.link {
+    text-decoration: none;
+    color: white;
+    margin: 0;
+    cursor: pointer
+}
+
+.icon {
+    border-radius: 100%;
+    border: none;
+    width: 50px;
+    height: 50px;
+    transition: all 0.3s ease;
+}
+
+.iconic:hover .icon {
+    border-radius: 0.2em;
+}
+
+.iconic {
+    border-radius: 1em;
+    border: none;
+    padding: 25px;
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+    font-family: 'Nunito', sans-serif;
+    outline: none;
+    text-decoration: none;
+    cursor: pointer;
+    background: var(--mainColor);
+    display: flex;
+}

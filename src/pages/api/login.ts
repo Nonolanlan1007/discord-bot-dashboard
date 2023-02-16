@@ -50,16 +50,18 @@ export default async function Login(req: NextApiRequest, res: NextApiResponse) {
         headers: { Authorization: `${token_type} ${access_token}` }
     }).then(res => res.data);
 
-    const guilds: Guild[] | { unauthorized: true } = await axios.get("https://discord.com/api/users/@me/guilds", {
-        headers: { Authorization: `${token_type} ${access_token}` }
-    }).then(res => res.data);
-
     if (!("id" in me)) return res.redirect(OAuthURL);
 
-    const token = sign({ user: me, guilds: guilds }, process.env.JWT_SECRET!, { expiresIn: "1w" });
+    const token = sign(me, process.env.JWT_SECRET!, { expiresIn: "1w" });
 
     res.setHeader("Set-Cookie", [
-        serialize("cookie", token, {
+        serialize("userInfos", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== "development",
+            sameSite: "lax",
+            path: "/"
+        }),
+        serialize("userToken", access_token, {
             httpOnly: true,
             secure: process.env.NODE_ENV !== "development",
             sameSite: "lax",
@@ -67,5 +69,5 @@ export default async function Login(req: NextApiRequest, res: NextApiResponse) {
         })
     ]);
 
-    res.redirect("/dash");
+    res.redirect(`/dash`);
 }

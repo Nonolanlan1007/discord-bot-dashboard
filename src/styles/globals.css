@@ -1,3 +1,9 @@
+
+:root {
+  /* Remplacez la valeur ci-dessous pour changer la couleur principale de votre site.*/
+  --mainColor: #F2AC34;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap');
 
 /*div {

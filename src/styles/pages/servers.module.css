@@ -1,0 +1,30 @@
+.main {
+    justify-content: center;
+    align-items: center;
+    background-color: #2F3136;
+    border-radius: 1em;
+    margin: 100px;
+    transition: 0.3s ease;
+}
+
+.main * {
+    padding: 25px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/*.main:hover {
+    background-color: #36393F;
+}*/
+
+.guilds {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1em;
+    margin: 100px;
+    transition: 0.3s ease;
+}

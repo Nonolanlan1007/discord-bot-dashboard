@@ -22,6 +22,6 @@ export interface Guild {
     name: string;
     icon: string;
     owner: boolean;
-    permissions: string;
+    permissions: number;
     features: string[];
 }

@@ -22,7 +22,7 @@ export default function NavBar(props: NavBarProps) {
             </div>
             <div className={styles.right}>
                 {
-                    props.user ? <Button label={props.user.username} type="iconic" icon={`https://cdn.discordapp.com/avatars/${props.user.id}/${props.user.avatar}.png`} redirect="/dash" /> : <Button label="Se connecter" type="tertiary" redirect="/dash" />
+                    props.user ? <Button label={props.user.username} type="iconic" icon={props.user.avatar ? `https://cdn.discordapp.com/avatars/${props.user.id}/${props.user.avatar}.png` : "https://cdn.discordapp.com/embed/avatars/0.png"} redirect="/dash" /> : <Button label="Se connecter" type="tertiary" redirect="/dash" />
                 }
             </div>
         </div>
