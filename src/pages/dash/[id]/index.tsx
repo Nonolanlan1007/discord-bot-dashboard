@@ -1,24 +1,21 @@
 import {useEffect} from "react";
-import {DiscordUser, Guild} from "@/utils/types";
-import {parseUser} from "@/utils/parseUser";
+import {Data} from "@/utils/types";
 import axios from "axios";
 import Head from "next/head";
-import getUserGuilds from "@/utils/getUserGuilds";
-import getBotGuilds from "@/utils/getBotGuilds";
-import checkGuild from "@/utils/checkGuild";
+import parseGuilds from "@/utils/parseGuilds";
 import config from "@/utils/config.json";
 
-export default function Dash (props: { user: DiscordUser | null, servers: number, botGuilds: Guild[] | null, userGuilds: Guild[] | null, guildId: string }) {
+export default function Dash (props: { data: Data, guildId: string }) {
 
     useEffect(() => {
-        if (!props.user) window.location.href = `/login`
+        if (!props.data || !props.data.userInfos) window.location.href = `/login?redirect=${encodeURIComponent(window.location.href)}`;
         else {
-            const res = checkGuild(props.botGuilds, props.userGuilds)
+            const res = parseGuilds(props.data.botGuilds, props.data.userGuilds)
 
 
             if (res.guildsWithBot.find(x => x.id === props.guildId)) window.location.href = `/dash/${props.guildId}/modules`
             else if (res.guildsWithoutBot.find(x => x.id === props.guildId)) window.open(`https://discord.com/api/oauth2/authorize?client_id=${config.infos.id}&guild_id=${res.guildsWithoutBot.find(x => x.id === props.guildId)!.id}&permissions=-1&scope=bot`)
-            //else window.location.href = `/dash/`
+            else if (!res.guildsWithBot.find(x => x.id === props.guildId) && !res.guildsWithoutBot.find(x => x.id === props.guildId)) window.location.href = `/dash`
         }
     },[])
 
@@ -49,18 +46,12 @@ export default function Dash (props: { user: DiscordUser | null, servers: number
     )
 }
 
-export const getServerSideProps: (ctx: any) => Promise<{ props: { servers: string; user: DiscordUser | null } }> = async (ctx) => {
-    const user = parseUser(ctx)
+export const getServerSideProps: (ctx: any) => Promise<{ props: { data: Data } }> = async (ctx) => {
+    const data = await axios.get(`${process.env.APP_URL}/api/data`, {
+        headers: {
+            Cookie: ctx.req.headers.cookie
+        }
+    }).then(res => res.data).catch(() => null);
 
-    const stats = await axios.get(`${process.env.APP_URL}/api/stats`).then(res => res.data);
-
-    const userGuilds = await getUserGuilds(ctx)
-
-    const botGuilds = await getBotGuilds()
-
-    console.log(botGuilds)
-    console.log(userGuilds)
-    console.log(checkGuild(botGuilds ? botGuilds.data : null, userGuilds ? userGuilds.data : null))
-
-    return { props: { user: user, servers: stats.servers!, botGuilds: botGuilds ? botGuilds.data : null, userGuilds: userGuilds ? userGuilds.data : null, guildId: ctx.query.id } };
+    return { props: { data: data, guildId: ctx.query.id } };
 }

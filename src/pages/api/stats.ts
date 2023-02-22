@@ -11,6 +11,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         headers: {
             Authorization: `Bot ${process.env.DISCORD_TOKEN}`
         }
+    }).catch(() => {
+        return {
+            data: []
+        }
     })
 
     const serverCount = data.data.length.toLocaleString("fr-FR");

@@ -23,9 +23,20 @@ const OAuthURL = `https://discord.com/api/oauth2/authorize?${OAUTH_PARAMS}`;
 export default async function Login(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== "GET") return res.redirect("/");
 
-    const { code = null, error = null } = req.query;
+    const { code = null, error = null, redirect = null } = req.query;
 
     if (error) return res.redirect(`/?error=${req.query.error}`);
+
+    if (redirect) {
+        res.setHeader("Set-Cookie", [
+            serialize("redirectAfterLogin", redirect, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV !== "development",
+                sameSite: "lax",
+                path: "/"
+            }),
+        ]);
+    }
 
     if (!code || typeof code !== "string") return res.redirect(OAuthURL);
 
@@ -41,33 +52,26 @@ export default async function Login(req: NextApiRequest, res: NextApiResponse) {
     // @ts-ignore
     const { access_token, token_type = "Bearer" } = await axios.post("https://discord.com/api/oauth2/token", body, {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    }).then(res => res.data);
+    }).then(res => res.data).catch(() => {
+        return res.redirect(OAuthURL)
+    })
 
     if (!access_token || typeof access_token !== "string") return res.redirect(OAuthURL);
 
-    // @ts-ignore
-    const me: DiscordUser | { unauthorized: true } = await axios.get("https://discord.com/api/users/@me", {
-        headers: { Authorization: `${token_type} ${access_token}` }
-    }).then(res => res.data);
+    let redirectAfterLogin = req.cookies.redirectAfterLogin;
 
-    if (!("id" in me)) return res.redirect(OAuthURL);
+    const data = await axios.post(`${process.env.APP_URL}/api/data`, { token: access_token }).then(res => res.data).catch(() => { return undefined });
 
-    const token = sign(me, process.env.JWT_SECRET!, { expiresIn: "1w" });
-
-    res.setHeader("Set-Cookie", [
-        serialize("userInfos", token, {
+    if (data && data.success && data.id) {
+        res.setHeader("Set-Cookie", serialize("id", String(data.id), {
             httpOnly: true,
             secure: process.env.NODE_ENV !== "development",
             sameSite: "lax",
             path: "/"
-        }),
-        serialize("userToken", access_token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV !== "development",
-            sameSite: "lax",
-            path: "/"
-        })
-    ]);
+        }));
 
-    res.redirect(`/dash`);
+        return res.redirect(redirectAfterLogin || "/");
+    }
+
+    return res.redirect(OAuthURL);
 }

@@ -1,19 +1,29 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import config from '@/utils/config.json'
 import NavBar from "@/components/NavBar";
 import styles from "@/styles/pages/index.module.css"
 import { Button } from "@/components/Inputs";
 import FeatureCard from "@/components/FeatureCard";
-import {parseUser} from "@/utils/parseUser";
-import {GetServerSideProps} from "next";
 import {DiscordUser, Props} from "@/utils/types";
 import axios from "axios";
+import {useEffect} from "react";
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home(props: Props) {
+
+  useEffect(() => {
+      const searchParams = new URLSearchParams(window.location.search)
+
+      if (searchParams.get("error")) {
+            if (searchParams.get("error") === "access_denied") {
+                alert("Il semblerait que vous ayez refusé l'accès à votre compte Discord. Veuillez réessayer pour accéder au dashboard.")
+                window.location.href = "/"
+            }
+      }
+  }, [])
+
   return (
     <>
       <Head>
@@ -64,9 +74,13 @@ export default function Home(props: Props) {
 }
 
 export const getServerSideProps: (ctx: any) => Promise<{ props: { servers: string; user: DiscordUser | null } }> = async (ctx) => {
-    const user = parseUser(ctx);
+    const stats = await axios.get(`${process.env.APP_URL}/api/stats`).then(res => res.data).catch(() => "0");
 
-    const stats = await axios.get(`${process.env.APP_URL}/api/stats`).then(res => res.data);
+    const data = await axios.get(`${process.env.APP_URL}/api/data`, {
+        headers: {
+            Cookie: ctx.req.headers.cookie
+        }
+    }).then(res => res.data).catch(() => null);
 
-    return { props: { user: user, servers: stats.servers! } };
+    return { props: { user: data && data.userInfos ? data.userInfos : null, servers: stats && typeof stats === "object" ? stats.servers : data.botGuilds ? data.botGuilds.length.toLocalString("fr-FR") : "0" } };
 }

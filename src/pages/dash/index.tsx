@@ -1,15 +1,13 @@
 import {useEffect} from "react";
-import {DiscordUser, Props} from "@/utils/types";
-import {parseUser} from "@/utils/parseUser";
-import axios from "axios";
+import {Data} from "@/utils/types";
 import Head from "next/head";
-import * as process from "process";
+import axios from "axios";
 
-export default function Dash (props: Props) {
+export default function Dash (props: { data: Data }) {
 
     useEffect(() => {
-        if (props.user) window.location.href = `/dash/servers`
-        else window.location.href = `/login`
+        if (!props.data) window.location.href = `/login`
+        else window.location.href = `/dash/servers`
     },[])
 
     let style = {
@@ -39,10 +37,12 @@ export default function Dash (props: Props) {
     )
 }
 
-export const getServerSideProps: (ctx: any) => Promise<{ props: { servers: string; user: DiscordUser | null } }> = async (ctx) => {
-    const user = parseUser(ctx)
+export const getServerSideProps: (ctx: any) => Promise<{ props: { data: Data } }> = async (ctx) => {
+    const data = await axios.get(`${process.env.APP_URL}/api/data`, {
+        headers: {
+            Cookie: ctx.req.headers.cookie
+        }
+    }).then(res => res.data).catch(() => null);
 
-    const stats = await axios.get(`${process.env.APP_URL}/api/stats`).then(res => res.data);
-
-    return { props: { user: user, servers: stats.servers! } };
+    return { props: { data: data ? data : null } };
 }
